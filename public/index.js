@@ -1,21 +1,17 @@
 let topUrl = "";
 
-window.addEventListener("message", async event => {
+window.addEventListener("message", async (event) => {
     const inputType = isInput(event.data);
     let url = cutCommand(event.data);
     if (inputType === true) {
-        window.navigator.serviceWorker.register('./sw.js', {
-            scope: __uv$config.prefix
-        }).then(() => {
-            if (!isUrl(url)) url = 'https://www.google.com/search?q=' + url;
-            else if (!(url.startsWith('https://') || url.startsWith('http://'))) url = 'http://' + url;
-            try {
-                await registerSW()
-            } catch (err) {
-                throw err;
-            };
-            location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
-        });
+        if (!isUrl(url)) url = 'https://www.google.com/search?q=' + url;
+        else if (!(url.startsWith('https://') || url.startsWith('http://'))) url = 'http://' + url;
+        try {
+            await registerSW()
+        } catch (err) {
+            throw err;
+        };
+        location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
     } else if (inputType === false) {
         topUrl = url;
     } else /* null */ {
